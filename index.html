@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Security - Marriott Demo Blueprint</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0e27;
+            color: #e0e6ed;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+            padding: 40px 0;
+            border-bottom: 1px solid #2a3f5f;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 199, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00c7ff 0%, #0080ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8892b0;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section {
+            background: linear-gradient(180deg, #0a0e27 0%, #0f1629 100%);
+            padding: 80px 0;
+            text-align: center;
+            border-bottom: 1px solid #1a2332;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            color: #8892b0;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .stat-card {
+            background: rgba(26, 31, 58, 0.5);
+            border: 1px solid #2a3f5f;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #00c7ff;
+            box-shadow: 0 10px 30px rgba(0, 199, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00c7ff;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #8892b0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            padding: 80px 0;
+            border-bottom: 1px solid #1a2332;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .section-description {
+            color: #8892b0;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .threat-scenario {
+            background: rgba(26, 31, 58, 0.3);
+            border: 1px solid #2a3f5f;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .threat-scenario:hover {
+            border-color: #00c7ff;
+            background: rgba(26, 31, 58, 0.5);
+        }
+        
+        .threat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .threat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff4458 0%, #ff6b6b 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .threat-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .threat-risk {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .persona-card {
+            background: rgba(26, 31, 58, 0.4);
+            border: 1px solid #2a3f5f;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .persona-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #00c7ff 0%, #0080ff 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .persona-card:hover::before {
+            opacity: 1;
+        }
+        
+        .persona-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .persona-vulnerability {
+            color: #00c7ff;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        .persona-role {
+            color: #8892b0;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .persona-details {
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .tech-badge {
+            background: rgba(0, 199, 255, 0.1);
+            border: 1px solid rgba(0, 199, 255, 0.3);
+            color: #00c7ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-badge:hover {
+            background: rgba(0, 199, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .impact-section {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .impact-section::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 199, 255, 0.05) 0%, transparent 70%);
+        }
+        
+        .impact-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .impact-card {
+            background: rgba(26, 31, 58, 0.5);
+            border: 1px solid #2a3f5f;
+            border-radius: 12px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .impact-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00c7ff;
+            margin-bottom: 15px;
+        }
+        
+        .impact-label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .impact-detail {
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+        
+        .highlight {
+            color: #00c7ff;
+            font-weight: 500;
+        }
+        
+        .warning {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+        
+        .citation {
+            color: #00c7ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: inherit;
+        }
+        
+        .citation:hover {
+            text-decoration: underline;
+            color: #00a8ff;
+        }
+        
+        .tool-comparison {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(26, 31, 58, 0.3) 100%);
+            border: 1px solid rgba(0, 199, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-comparison::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00c7ff 0%, #0080ff 100%);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .comparison-column {
+            background: rgba(10, 14, 39, 0.5);
+            border: 1px solid #2a3f5f;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        
+        .comparison-column h4 {
+            color: #e0e6ed;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .comparison-column.limitations h4 {
+            color: #ff6b6b;
+        }
+        
+        .comparison-column.advantages h4 {
+            color: #00c7ff;
+        }
+        
+        .comparison-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comparison-column li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .comparison-column.limitations li::before {
+            content: "×";
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .comparison-column.advantages li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00c7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Obsidian Security - Marriott Demo Blueprint</h1>
+            <p class="subtitle">Demo Playbook - Work in Progress</p>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container">
+            <h2 class="hero-title">Building the Marriott Security Demo That Wins</h2>
+            <p class="hero-description">
+                A comprehensive guide for sales engineers to demonstrate how Obsidian Security prevents the next 
+                <a href="https://www.nbcnews.com/business/business-news/cyberattack-cost-mgm-resorts-100-million-las-vegas-company-says-rcna119138" class="citation">$100M MGM-style breach</a> 
+                for Marriott's 8,000+ properties and 200M+ loyalty members.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">$3.86M</div>
+                    <div class="stat-label">Avg Hospitality Breach</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">31%</div>
+                    <div class="stat-label">Hotels Breached</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Multiple Breaches</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$23.8M</div>
+                    <div class="stat-label">Marriott GDPR Fine</div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Sources: <a href="https://www.helpnetsecurity.com/2025/07/03/hospitality-industry-cybersecurity-challenges/" class="citation">Help Net Security 2025</a>, 
+                <a href="https://www.techmagic.co/blog/hospitality-cybersecurity" class="citation">TechMagic 2025</a>, 
+                <a href="https://techcrunch.com/2020/10/30/uk-watchdog-reduces-marriott-data-breach-fine-to-23-8m-down-from-123m/" class="citation">TechCrunch</a>
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Demo Environment Architecture</h2>
+            <p class="section-description">
+                Practical setup representing Marriott's complex identity landscape
+            </p>
+            
+            <div class="threat-scenario">
+                <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Demo Organization Structure (150 Identities)</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 15px;">👥 <strong>Users:</strong> 120 active users across corporate, regional, and property levels</li>
+                    <li style="margin-bottom: 15px;">🔐 <strong>Privileged Accounts:</strong> 12 admins (Okta, Salesforce, Snowflake, M365, ServiceNow)</li>
+                    <li style="margin-bottom: 15px;">🤖 <strong>Service Accounts:</strong> 10 automation accounts for integrations</li>
+                    <li style="margin-bottom: 15px;">🤝 <strong>Vendor Access:</strong> 8 third-party users with federated access</li>
+                    <li style="margin-bottom: 15px;">📊 <strong>Role Distribution:</strong> IT/Security (15%), Sales/Marketing (25%), Operations (40%), Finance/HR (20%)</li>
+                </ul>
+                
+                <h4 style="margin-top: 30px; margin-bottom: 15px;">Core SaaS Applications</h4>
+                <div class="tech-stack">
+                    <span class="tech-badge">Okta (Primary IdP)</span>
+                    <span class="tech-badge">Microsoft 365</span>
+                    <span class="tech-badge">Salesforce (CRM/Loyalty)</span>
+                    <span class="tech-badge">ServiceNow (ITSM)</span>
+                    <span class="tech-badge">Workday (HRIS)</span>
+                    <span class="tech-badge">Snowflake (Analytics)</span>
+                    <span class="tech-badge">Slack</span>
+                    <span class="tech-badge">Box/SharePoint</span>
+                    <span class="tech-badge">Zoom</span>
+                    <span class="tech-badge">AWS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Critical Threat Scenarios</h2>
+            <p class="section-description">
+                Four attack patterns based on real hospitality breaches
+            </p>
+            
+            <div class="threat-scenario">
+                <div class="threat-header">
+                    <div class="threat-icon">🔐</div>
+                    <div>
+                        <h3 class="threat-title">Okta Breach → Salesforce Loyalty Heist</h3>
+                        <p class="threat-risk">Business Risk: 200M Bonvoy member records exposed</p>
+                    </div>
+                </div>
+                <p>Mirroring the <a href="https://www.bleepingcomputer.com/news/security/mgm-resorts-ransomware-attack-led-to-100-million-loss-data-theft/" class="citation">MGM Scattered Spider attack</a>, 
+                threat actors social engineer helpdesk to reset Okta admin MFA. They create backdoor SSO app, pivot to Salesforce Marketing Cloud, 
+                and begin mass API export of loyalty data. Obsidian detects anomalous OAuth scopes, correlates cross-SaaS activity, 
+                and auto-revokes all sessions within 90 seconds - preventing a repeat of Marriott's 
+                <a href="https://www.csoonline.com/article/567795/marriott-data-breach-faq-how-did-it-happen-and-what-was-the-impact.html" class="citation">339M record breach</a>.</p>
+            </div>
+            
+            <div class="threat-scenario">
+                <div class="threat-header">
+                    <div class="threat-icon">🛠️</div>
+                    <div>
+                        <h3 class="threat-title">ServiceNow Supply Chain Compromise</h3>
+                        <p class="threat-risk">Business Risk: Property operations paralyzed globally</p>
+                    </div>
+                </div>
+                <p>Third-party property management vendor's ServiceNow integration compromised via 
+                <a href="https://www.cybermagazine.com/articles/trustwave-report-on-hospitality-industry-security-threats" class="citation">MOVEit vulnerability (CVE-2023-34362)</a>. 
+                Malicious workflow attempts to disable door locks and HVAC across 500+ properties. 
+                Obsidian identifies unusual service account patterns, blocks workflow propagation, 
+                and maintains business continuity where traditional SIEM would miss the SaaS-to-SaaS attack vector.</p>
+            </div>
+            
+            <div class="threat-scenario">
+                <div class="threat-header">
+                    <div class="threat-icon">❄️</div>
+                    <div>
+                        <h3 class="threat-title">Snowflake Analytics Exfiltration</h3>
+                        <p class="threat-risk">Business Risk: Competitive intelligence and guest behavior data stolen</p>
+                    </div>
+                </div>
+                <p>Data analyst's temporary ACCOUNTADMIN elevation never removed - a common issue where 
+                <a href="https://www.varonis.com/blog/data-breach-statistics" class="citation">65% of breaches involve internal actors</a>. 
+                Attackers use dormant privileges to run massive exports during off-hours from new geographic location. 
+                Obsidian's identity-centric approach catches privilege drift, abnormal query volume, 
+                and impossible travel that log-based tools miss.</p>
+            </div>
+            
+            <div class="threat-scenario">
+                <div class="threat-header">
+                    <div class="threat-icon">🌙</div>
+                    <div>
+                        <h3 class="threat-title">Midnight Blizzard - Executive AiTM Campaign</h3>
+                        <p class="threat-risk">Business Risk: C-suite compromise, M&A intelligence exposed</p>
+                    </div>
+                </div>
+                <p>Sophisticated adversary-in-the-middle attack targets executives during industry conference. 
+                Similar to attacks causing <a href="https://dataprivacymanager.net/5-biggest-gdpr-fines-so-far-2020/" class="citation">€265M Meta fines</a>, 
+                attackers bypass MFA, establish persistence via OAuth apps, begin email exfiltration. 
+                Obsidian correlates impossible travel, legacy protocol usage, and suspicious mail rules - 
+                stopping the attack before strategic documents leak.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Key Demo Personas</h2>
+            <p class="section-description">
+                Realistic breach victims based on actual hospitality attack patterns
+            </p>
+            
+            <div class="persona-grid">
+                <div class="persona-card">
+                    <h3 class="persona-name">Sarah Chen</h3>
+                    <p class="persona-vulnerability">High-Value Data Access</p>
+                    <p class="persona-role">VP of Loyalty Programs</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Salesforce Marketing Cloud Admin, Snowflake BI-Writer</p>
+                        <p><strong>Attack Vector:</strong> Phishing → OAuth token theft → 200M records at risk</p>
+                        <p><strong>Why Vulnerable:</strong> Marketing teams click 3x more phishing links than IT</p>
+                    </div>
+                </div>
+                
+                <div class="persona-card">
+                    <h3 class="persona-name">Marcus Thompson</h3>
+                    <p class="persona-vulnerability">Alert Fatigue Blindspot</p>
+                    <p class="persona-role">Senior SOC Analyst</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Read-only to most systems, ServiceNow admin</p>
+                        <p><strong>Attack Vector:</strong> Overwhelmed by alerts, misses critical SaaS attacks</p>
+                        <p><strong>Why Vulnerable:</strong> Reviews 10,000+ daily alerts, 99% false positives</p>
+                    </div>
+                </div>
+                
+                <div class="persona-card">
+                    <h3 class="persona-name">Jennifer Walsh</h3>
+                    <p class="persona-vulnerability">Financial Data Exposure</p>
+                    <p class="persona-role">Finance Director</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Workday admin, Snowflake finance schemas, Box CFO folder</p>
+                        <p><strong>Attack Vector:</strong> Credential stuffing → financial data exposure</p>
+                        <p><strong>Why Vulnerable:</strong> Reuses passwords across multiple financial platforms</p>
+                    </div>
+                </div>
+                
+                <div class="persona-card">
+                    <h3 class="persona-name">Alex Rivera</h3>
+                    <p class="persona-vulnerability">Social Engineering Target</p>
+                    <p class="persona-role">Identity Engineer</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Okta Super Admin, Azure AD Global Admin</p>
+                        <p><strong>Attack Vector:</strong> Social engineering target for helpdesk resets</p>
+                        <p><strong>Why Vulnerable:</strong> Public LinkedIn profile lists admin responsibilities</p>
+                    </div>
+                </div>
+                
+                <div class="persona-card">
+                    <h3 class="persona-name">David Kumar</h3>
+                    <p class="persona-vulnerability">Executive Impersonation Risk</p>
+                    <p class="persona-role">CISO</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Executive M365, limited admin rights (by design)</p>
+                        <p><strong>Attack Vector:</strong> Targeted for AiTM/BEC attacks</p>
+                        <p><strong>Why Vulnerable:</strong> Public speaking schedule makes targeting easy</p>
+                    </div>
+                </div>
+                
+                <div class="persona-card">
+                    <h3 class="persona-name">Rachel Park</h3>
+                    <p class="persona-vulnerability">Compliance Visibility Gap</p>
+                    <p class="persona-role">Compliance Manager</p>
+                    <div class="persona-details">
+                        <p><strong>Access:</strong> Read-only audit logs, ServiceNow compliance workflows</p>
+                        <p><strong>Attack Vector:</strong> Needs evidence for audits, frustrated by tool limitations</p>
+                        <p><strong>Why Vulnerable:</strong> Downloads sensitive reports to personal devices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact-section">
+        <div class="container">
+            <h2 class="impact-title">Why Obsidian Wins Where Others Fail</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 50px; color: #8892b0;">
+                Understanding Marriott's current security stack and its critical gaps
+            </p>
+            
+            <div class="tool-comparison">
+                <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Current Tools vs. Modern Threats</h3>
+                <p style="margin-bottom: 30px; color: #8892b0;">
+                    Like most enterprises, Marriott likely relies on traditional SIEM/SOAR tools that 
+                    <a href="https://www.techtarget.com/searchsecurity/answer/SOAR-vs-SIEM-Whats-the-difference" class="citation">weren't designed for SaaS security</a>:
+                </p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-column limitations">
+                        <h4>Traditional SIEM/SOAR Reality</h4>
+                        <ul>
+                            <li>11,000+ daily alerts (31% false positives)</li>
+                            <li>28% of alerts never investigated</li>
+                            <li>10+ minutes average triage time per alert</li>
+                            <li>70% of analyst time wasted on manual triage</li>
+                            <li>Requires custom rules for each SaaS app</li>
+                            <li>No SaaS context - just logs and events</li>
+                            <li>6-12 month deployment + ongoing maintenance</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-column advantages">
+                        <h4>Obsidian's Proven Advantages</h4>
+                        <ul>
+                            <li>80% reduction in SaaS attack surface</li>
+                            <li>10x faster incident response times</li>
+                            <li>97% automated verdict accuracy</li>
+                            <li>Out-of-the-box SaaS expertise built-in</li>
+                            <li>Knowledge Graph maps all SaaS relationships</li>
+                            <li>25% SIEM cost reduction (no log forwarding)</li>
+                            <li>Deploy in minutes with just a few clicks</li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
+                    Sources: <a href="https://www.paloaltonetworks.com/blog/2020/09/secops-analyst-burnout/" class="citation">Forrester SOC Study</a>, 
+                    <a href="https://www.obsidiansecurity.com/resource/bigcommerce-enhances-saas-threat-detection-with-obsidian" class="citation">BigCommerce Case Study</a>,
+                    <a href="https://aws.amazon.com/marketplace/pp/prodview-waarjdrss2pmg" class="citation">Obsidian AWS Marketplace</a>
+                </p>
+            </div>
+            
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-number">$47.2M</div>
+                    <div class="impact-label">Total Marriott Breach Costs</div>
+                    <div class="impact-detail">$23.8M GDPR fine + operational losses + legal fees 
+                    (<a href="https://techcrunch.com/2020/10/30/uk-watchdog-reduces-marriott-data-breach-fine-to-23-8m-down-from-123m/" class="citation">source</a>)</div>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-number">80%</div>
+                    <div class="impact-label">Attack Surface Reduction</div>
+                    <div class="impact-detail">Average reduction in SaaS attack surface with Obsidian 
+                    (<a href="https://aws.amazon.com/marketplace/pp/prodview-waarjdrss2pmg" class="citation">AWS Marketplace</a>)</div>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-number">10x</div>
+                    <div class="impact-label">Faster Response Time</div>
+                    <div class="impact-detail">From hours to minutes with automated threat containment 
+                    (<a href="https://www.obsidiansecurity.com/news/obsidian-integration-with-crowdstrike-nextgen-siem" class="citation">Obsidian</a>)</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 60px; background: rgba(26, 31, 58, 0.5); border-radius: 12px; padding: 40px; backdrop-filter: blur(10px);">
+                <h3 style="font-size: 1.8rem; margin-bottom: 30px;">The Obsidian Difference for Marriott</h3>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: #00c7ff; margin-bottom: 10px;">🎯 Stop Identity-Based Attacks (82% of All Breaches)</h4>
+                    <p>MGM lost $100M from <a href="https://www.nbcnews.com/business/business-news/cyberattack-cost-mgm-resorts-100-million-las-vegas-company-says-rcna119138" class="citation">one phone call to helpdesk</a>. 
+                    Obsidian's identity-first approach and Knowledge Graph technology maps every relationship between users, apps, and data - 
+                    catching social engineering, credential theft, and insider threats that SIEM tools miss entirely.</p>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: #00c7ff; margin-bottom: 10px;">🛡️ Built on 500+ Real SaaS Breaches</h4>
+                    <p>Unlike generic SIEM rules, Obsidian's AI is trained on <a href="https://www.obsidiansecurity.com/news/obsidian-integration-with-crowdstrike-nextgen-siem" class="citation">hundreds of actual SaaS incident responses</a>. 
+                    This means prevention, not just alerts. Our models know exactly how attackers move through Okta → Salesforce → Snowflake 
+                    because we've stopped these attacks before.</p>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: #00c7ff; margin-bottom: 10px;">💰 25% SIEM Cost Reduction + Faster Value</h4>
+                    <p><a href="https://www.obsidiansecurity.com/resource/bigcommerce-enhances-saas-threat-detection-with-obsidian" class="citation">BigCommerce reduced SIEM costs by 25%</a> 
+                    by eliminating log forwarding fees. Deploy in minutes with just clicks - no agents, no proxies, no custom rules. 
+                    Get actionable insights immediately vs. 6-12 months of SIEM tuning.</p>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: #00c7ff; margin-bottom: 10px;">📊 Complete SaaS Context SIEM Can't Provide</h4>
+                    <p>SIEM sees logs. Obsidian sees everything: OAuth tokens, API behavior, configuration drift, third-party integrations, 
+                    and data movement. Our <a href="https://aws.amazon.com/marketplace/pp/prodview-waarjdrss2pmg" class="citation">Knowledge Graph technology</a> 
+                    understands SaaS relationships that log analysis will never catch.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center; padding: 30px; background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 68, 88, 0.1) 100%); border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 12px;">
+                <p style="font-size: 1.3rem; margin-bottom: 15px;">
+                    <span class="warning">The Bottom Line:</span> Marriott faces another 
+                    <a href="https://www.coursera.org/articles/cyber-security-in-hospitality-industry" class="citation">$15.63 trillion cybercrime risk by 2029</a>
+                </p>
+                <p style="font-size: 1.1rem; color: #8892b0;">
+                    Every property, every night, every OAuth token is a potential breach point. 
+                    <br>Obsidian is the only platform purpose-built to stop SaaS breaches before they start.
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
